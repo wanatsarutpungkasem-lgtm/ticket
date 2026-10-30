@@ -1,0 +1,14 @@
+{
+  "name": "ticket-pilot-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local ticket booking lab with a server queue, atomic holds and a same-origin booking assistant",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "assistant": "node assistant.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

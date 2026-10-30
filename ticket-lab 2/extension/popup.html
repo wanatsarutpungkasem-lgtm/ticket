@@ -1,0 +1,14 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ticket Pilot — TTM Reader</title><link rel="stylesheet" href="popup.css"><script type="module" src="popup.js"></script></head><body data-pilot-ui>
+<div class="eyebrow">TICKET PILOT / 0.2.0</div><h1>ตรวจหน้า TTM ของคุณ</h1>
+<p>เปิดแท็บเลือกรอบและโซนของ TTM แล้วกดตรวจ ส่วนขยายจะอ่านข้อมูลที่แสดงบนหน้านี้</p>
+<button id="inspect">ตรวจชื่องานและรอบจากแท็บนี้</button>
+<div id="status" role="status" aria-live="polite">รอคุณกดตรวจ · ยังไม่อ่านแท็บ</div>
+<section id="report" hidden><span id="source" class="badge"></span><h2 id="event-name"></h2><p id="page-stage"></p>
+<label>รอบที่เว็บแสดง<select id="round-choice"></select></label>
+<label>จำนวนที่ต้องการ<select id="desired-quantity"><option>2 ใบ</option><option>1 ใบ</option><option>3 ใบ</option><option>4 ใบ</option></select></label>
+<small>จำนวนนี้เป็นแผนในแผงเท่านั้น รุ่นนี้ยังไม่กรอกจำนวนหรือเลือกที่นั่งบน TTM</small>
+<button id="apply" disabled>เลือกรอบนี้บนหน้าเว็บ · ยังไม่จอง</button>
+<p id="availability"></p><ul id="zones"></ul></section>
+<p class="note">รองรับเฉพาะหน้าเลือกรอบ &amp; โซน /booking/3m/zones.php<br>ไม่กดยืนยัน ไม่อ่านรหัสผ่าน คุกกี้ หรือข้อมูลชำระเงิน ไม่เก็บข้อมูลจากแท็บ</p>
+<a href="http://127.0.0.1:5208/" target="_blank" rel="noopener">เปิด Ticket Lab เดิม ↗</a>
+</body></html>

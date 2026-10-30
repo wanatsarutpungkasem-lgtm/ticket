@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Ticket Pilot — Lab & TTM Reader",
+  "version": "0.2.0",
+  "description": "ตรวจชื่องานและรอบในหน้าโซน TTM เมื่อผู้ใช้กด ไม่ยืนยันจองหรือชำระเงิน",
+  "action": {
+    "default_title": "Ticket Pilot — ตรวจหน้า TTM",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://127.0.0.1/*",
+        "http://localhost/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ]
+}

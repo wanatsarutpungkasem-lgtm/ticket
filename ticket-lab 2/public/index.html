@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ticket Pilot Lab — ห้องทดลองจองบัตร</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" type="module"></script>
+</head>
+<body>
+<header><a class="brand" href="/">ticket pilot<span> / LAB</span></a><div class="header-right"><span class="badge">ระบบทดสอบของเรา</span><span id="connection">กำลังเชื่อมต่อเซิร์ฟเวอร์…</span></div></header>
+<main>
+  <section class="intro"><div><div class="eyebrow">FROM PROTOTYPE TO WORKING SYSTEM</div><h1>ลองจองจริง<span>ในสนามทดสอบ</span></h1><p>ผู้ช่วยส่งคำขอไปยังเซิร์ฟเวอร์ คิวและที่นั่งใช้ร่วมกันทุกหน้าต่าง<br>ไม่มีการซื้อบัตรจากผู้ให้บริการภายนอก และไม่มีการเรียกเก็บเงิน</p><button class="primary" id="extension-preview">◈ ลองแผงส่วนขยาย · ไม่ต้องติดตั้ง</button><p class="small">ตัวอย่างใช้โค้ดผู้ช่วยชุดเดียวกับส่วนขยาย Chrome แต่เปิดเป็นแผงในเว็บนี้</p></div><div class="server-note"><span class="pulse"></span><strong>LOCAL BOOKING ENGINE</strong><p>คิว FIFO · ล็อกที่นั่ง 45 วินาที<br>2 ผู้ซื้อเข้าพร้อมกัน · 2 รอบแสดง</p></div></section>
+  <div class="layout">
+    <aside class="panel settings"><div class="section-label">01 / CONFIGURATION</div><h2>ตั้งค่าผู้ช่วย</h2><div class="buyer"><span>ผู้ซื้อทดสอบ</span><strong id="buyer">กำลังสร้าง…</strong><small>รหัสสมมติ ไม่รับเลขบัตรประชาชน</small></div>
+    <form id="form">
+      <label>รูปแบบการจอง<select id="mode"><option value="bot">ผู้ช่วยหาที่ติดกันอัตโนมัติ</option><option value="manual">เลือกที่นั่งเอง</option></select></label>
+      <div class="two"><label>รอบแสดง<select id="show"><option value="A">รอบ A · 19:00</option><option value="B">รอบ B · 19:00</option></select></label><label>จำนวนบัตร<select id="quantity"><option value="2">2 ใบ</option><option value="1">1 ใบ</option><option value="3">3 ใบ</option><option value="4">4 ใบ</option></select></label></div>
+      <div class="two"><label>โซนหลัก<select id="primary"><option>LA2</option><option>RA2</option><option>LB2</option><option>RB2</option></select></label><label>โซนสำรอง<select id="backup"><option>RA2</option><option>LA2</option><option>LB2</option><option>RB2</option></select></label></div>
+      <button class="primary full" id="start" type="submit" disabled>เริ่มเข้าคิวและจอง →</button>
+    </form>
+    <button class="secondary full" id="stop" disabled>ออกจากคิว / ปล่อยที่นั่ง</button>
+    <div class="setting-note">ผู้ช่วยเลือกที่นั่งให้หลังได้รับสิทธิ์จากคิว แล้วหยุดให้คุณตรวจและยืนยันจองทดสอบ</div>
+    <div class="divider"></div><div class="section-label">MULTI-BUYER TEST</div><p class="small">เปิดหน้าต่างใหม่เป็นอีกคน เพื่อทดลองเข้าคิวและแย่งที่นั่งเดียวกัน</p><button class="secondary full" id="other">เปิดผู้ซื้อทดสอบอีกคน ↗</button><button class="text-button full" id="reset" disabled>เริ่มใหม่ด้วยผู้ซื้อคนใหม่</button>
+    </aside>
+    <section class="panel workspace"><div class="workspace-header"><div><div class="section-label">02 / BOOKING SESSION</div><h2>NEON CITY <span class="muted">/ TEST EVENT</span></h2></div><span class="session-badge" id="state" role="status" aria-live="polite">พร้อมเริ่ม</span></div>
+      <div class="steps"><span id="step-queue">01 เข้าคิว</span><span id="step-seats">02 เลือกที่นั่ง</span><span id="step-hold">03 ล็อกชั่วคราว</span><span id="step-order">04 สรุปจอง</span></div>
+      <div id="message" role="alert" hidden></div>
+      <div id="welcome" class="screen center"><div class="orbit">◈</div><h3>คำขอจองที่ตรวจสอบผลได้</h3><p>ตั้งค่าทางซ้ายแล้วกดเริ่ม<br>เซิร์ฟเวอร์จะเป็นคนตัดสินคิวและสิทธิ์ในที่นั่ง</p><div class="mini-stats"><div><strong>4</strong><span>โซนทดสอบ</span></div><div><strong>45s</strong><span>เวลาล็อกที่นั่ง</span></div><div><strong>0 ฿</strong><span>ค่าใช้จ่ายจริง</span></div></div></div>
+      <div id="queue" class="screen center" hidden><div class="eyebrow">SERVER QUEUE</div><div class="queue-number" id="position">—</div><h3>กำลังรอสิทธิ์เข้าซื้อ</h3><p id="queue-note"></p><small>ลำดับมาจากเซิร์ฟเวอร์ ผู้ช่วยไม่มีสิทธิ์ข้ามคิว</small></div>
+      <div id="seating" class="screen" hidden><div class="map-header"><label>ผังโซนที่กำลังดู<select id="map-zone"><option>LA2</option><option>RA2</option><option>LB2</option><option>RB2</option></select></label><div class="permit">สิทธิ์เข้าซื้อเหลือ<strong id="permit-time">—</strong></div></div><div class="stage">STAGE</div><div class="seats" id="seats" aria-label="ผังที่นั่ง"></div><div class="legend"><span><i class="available"></i>ว่าง</span><span><i class="picked"></i>คุณเลือก</span><span><i class="held"></i>ถูกล็อก</span><span><i class="booked"></i>จองแล้ว</span></div><div class="selection-line"><span id="selected">ยังไม่ได้เลือก</span><button id="hold" class="primary" disabled>ล็อกที่นั่งที่เลือก</button></div><button id="retry" class="secondary full" hidden>ให้ผู้ช่วยหาที่นั่งใหม่</button></div>
+      <div id="holding" class="screen" hidden><div class="eyebrow">SEATS HELD BY THE SERVER</div><h3>ล็อกที่นั่งให้คุณแล้ว</h3><div class="hold-countdown" id="hold-time">45</div><p>วินาทีก่อนระบบคืนที่นั่ง</p><div id="hold-detail" class="receipt"></div><button class="primary full" id="confirm">ยืนยันจองทดสอบ · ไม่ชำระเงินจริง</button><button class="text-button full" id="release">ปล่อยที่นั่งและเลือกใหม่</button></div>
+      <div id="complete" class="screen" hidden><span class="badge">✓ TEST BOOKING COMPLETE</span><h3>เซิร์ฟเวอร์ยืนยันรายการแล้ว</h3><div id="order-detail" class="receipt"></div><p class="small">รายการนี้อยู่ในระบบทดสอบของเราเท่านั้น ไม่มีบัตรจาก AllTicket หรือ ThaiTicketMajor เกิดขึ้น</p><button class="primary full" id="again">ทดลองรอบใหม่</button></div>
+      <div class="log-header"><span class="section-label">03 / API ACTIVITY</span><span>คำตอบจากเซิร์ฟเวอร์จริง</span></div><pre id="log" aria-label="บันทึกคำขอ API"></pre>
+    </section>
+  </div><footer>Sandbox แยกอิสระ · ข้อมูลอยู่ในหน่วยความจำและเริ่มใหม่เมื่อรีสตาร์ตเซิร์ฟเวอร์ · ไม่เชื่อมเว็บขายบัตรภายนอก</footer>
+</main></body></html>

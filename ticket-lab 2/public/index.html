@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ticket Pilot Lab — ห้องทดลองจองบัตร</title>
-  <link rel="stylesheet" href="/style.css"><script src="/app.js" type="module"></script>
+  <link rel="stylesheet" href="./style.css"><script src="./app.js" type="module"></script>
 </head>
 <body>
-<header><a class="brand" href="/">ticket pilot<span> / LAB</span></a><div class="header-right"><span class="badge">ระบบทดสอบของเรา</span><span id="connection">กำลังเชื่อมต่อเซิร์ฟเวอร์…</span></div></header>
+<header><a class="brand" href="./">ticket pilot<span> / LAB</span></a><div class="header-right"><span class="badge">ระบบทดสอบของเรา</span><span id="connection">กำลังเปิดระบบทดสอบ…</span></div></header>
 <main>
-  <section class="intro"><div><div class="eyebrow">FROM PROTOTYPE TO WORKING SYSTEM</div><h1>ลองจองจริง<span>ในสนามทดสอบ</span></h1><p>ผู้ช่วยส่งคำขอไปยังเซิร์ฟเวอร์ คิวและที่นั่งใช้ร่วมกันทุกหน้าต่าง<br>ไม่มีการซื้อบัตรจากผู้ให้บริการภายนอก และไม่มีการเรียกเก็บเงิน</p><button class="primary" id="extension-preview">◈ ลองแผงส่วนขยาย · ไม่ต้องติดตั้ง</button><p class="small">ตัวอย่างใช้โค้ดผู้ช่วยชุดเดียวกับส่วนขยาย Chrome แต่เปิดเป็นแผงในเว็บนี้</p></div><div class="server-note"><span class="pulse"></span><strong>LOCAL BOOKING ENGINE</strong><p>คิว FIFO · ล็อกที่นั่ง 45 วินาที<br>2 ผู้ซื้อเข้าพร้อมกัน · 2 รอบแสดง</p></div></section>
+  <section class="intro"><div><div class="eyebrow">FROM PROTOTYPE TO WORKING SYSTEM</div><h1>ลองจองจริง<span>ในสนามทดสอบ</span></h1><p>ผู้ช่วยจำลองลำดับคิว การเลือก และการล็อกที่นั่งในห้องทดลอง<br>ไม่มีการซื้อบัตรจากผู้ให้บริการภายนอก และไม่มีการเรียกเก็บเงิน</p><button class="primary" id="extension-preview">◈ ข้อมูลส่วนขยาย Chrome</button><p class="small">เมื่อรันด้วย Node.js บนเครื่อง ระบบจะใช้เซิร์ฟเวอร์ร่วมกัน ส่วน GitHub Pages เป็นโหมดสาธิตต่อแท็บ</p></div><div class="server-note"><span class="pulse"></span><strong>TEST BOOKING ENGINE</strong><p>คิว FIFO · ล็อกที่นั่ง 45 วินาที<br>2 รอบแสดง · ไม่ชำระเงินจริง</p></div></section>
   <div class="layout">
     <aside class="panel settings"><div class="section-label">01 / CONFIGURATION</div><h2>ตั้งค่าผู้ช่วย</h2><div class="buyer"><span>ผู้ซื้อทดสอบ</span><strong id="buyer">กำลังสร้าง…</strong><small>รหัสสมมติ ไม่รับเลขบัตรประชาชน</small></div>
     <form id="form">
@@ -29,7 +29,7 @@
       <div id="seating" class="screen" hidden><div class="map-header"><label>ผังโซนที่กำลังดู<select id="map-zone"><option>LA2</option><option>RA2</option><option>LB2</option><option>RB2</option></select></label><div class="permit">สิทธิ์เข้าซื้อเหลือ<strong id="permit-time">—</strong></div></div><div class="stage">STAGE</div><div class="seats" id="seats" aria-label="ผังที่นั่ง"></div><div class="legend"><span><i class="available"></i>ว่าง</span><span><i class="picked"></i>คุณเลือก</span><span><i class="held"></i>ถูกล็อก</span><span><i class="booked"></i>จองแล้ว</span></div><div class="selection-line"><span id="selected">ยังไม่ได้เลือก</span><button id="hold" class="primary" disabled>ล็อกที่นั่งที่เลือก</button></div><button id="retry" class="secondary full" hidden>ให้ผู้ช่วยหาที่นั่งใหม่</button></div>
       <div id="holding" class="screen" hidden><div class="eyebrow">SEATS HELD BY THE SERVER</div><h3>ล็อกที่นั่งให้คุณแล้ว</h3><div class="hold-countdown" id="hold-time">45</div><p>วินาทีก่อนระบบคืนที่นั่ง</p><div id="hold-detail" class="receipt"></div><button class="primary full" id="confirm">ยืนยันจองทดสอบ · ไม่ชำระเงินจริง</button><button class="text-button full" id="release">ปล่อยที่นั่งและเลือกใหม่</button></div>
       <div id="complete" class="screen" hidden><span class="badge">✓ TEST BOOKING COMPLETE</span><h3>เซิร์ฟเวอร์ยืนยันรายการแล้ว</h3><div id="order-detail" class="receipt"></div><p class="small">รายการนี้อยู่ในระบบทดสอบของเราเท่านั้น ไม่มีบัตรจาก AllTicket หรือ ThaiTicketMajor เกิดขึ้น</p><button class="primary full" id="again">ทดลองรอบใหม่</button></div>
-      <div class="log-header"><span class="section-label">03 / API ACTIVITY</span><span>คำตอบจากเซิร์ฟเวอร์จริง</span></div><pre id="log" aria-label="บันทึกคำขอ API"></pre>
+      <div class="log-header"><span class="section-label">03 / ACTIVITY</span><span>คำตอบจากระบบทดสอบ</span></div><pre id="log" aria-label="บันทึกคำขอทดสอบ"></pre>
     </section>
-  </div><footer>Sandbox แยกอิสระ · ข้อมูลอยู่ในหน่วยความจำและเริ่มใหม่เมื่อรีสตาร์ตเซิร์ฟเวอร์ · ไม่เชื่อมเว็บขายบัตรภายนอก</footer>
+  </div><footer>Sandbox แยกอิสระ · โหมด GitHub Pages เริ่มข้อมูลใหม่ต่อแท็บ · ไม่เชื่อมเว็บขายบัตรภายนอก</footer>
 </main></body></html>
